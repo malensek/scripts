@@ -1,0 +1,57 @@
+#!/bin/bash
+################################################################################
+# ressh - maintain a persistent SSH connection.  Could be used with something
+# like tmux or screen to have an automatically-attached terminal session, even
+# while switching between networks/interfaces.
+#
+# Version 1
+# Matthew Malensek <matthew@malensek.net>
+################################################################################
+# Default Options:
+# Close hung connections quickly:
+ssh_options="-oServerAliveInterval=1 -oServerAliveCountMax=3 -t"
+sleep_time=1
+unset verbose
+################################################################################
+
+print_usage() {
+cat <<EOM
+Usage: $(basename ${0}) [options] [user@]hostname [ssh-options] command
+    -s <number>    Seconds to sleep between connection retries. \
+Default: ${sleep_time}
+    -v             Verbose output; don't clear the screen
+EOM
+}
+
+while getopts "s:v" flag; do
+    case ${flag} in
+        s) sleep_time=${OPTARG} ;;
+        v) verbose=1 ;;
+        ?) print_usage; exit 1 ;;
+    esac
+done
+
+shift $(($OPTIND-1))
+
+# make sure we have at least 2 parameters
+if [[ ${#} -lt 2 ]]; then
+    print_usage
+    exit 1
+fi
+
+destination=${1}
+shift
+
+while :; do # loop forever
+    ssh ${ssh_options} ${destination} ${@}
+    # exit status is 255 if an error occurred; otherwise the remote command
+    # returned successfully.
+    if [[ ${?} -eq 255 ]]; then
+        [[ -n ${verbose} ]] || clear
+
+        echo "${script_name}: Connection Error! Retrying..."
+        sleep ${sleep_time}
+    else
+        break
+    fi
+done
