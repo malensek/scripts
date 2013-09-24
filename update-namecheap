@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ################################################################################
 # update-namecheap - simple script for updating Namecheap's dynamic DNS service.
 #

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ################################################################################
 # ressh - maintain a persistent SSH connection.  Could be used with something
 # like tmux or screen to have an automatically-attached terminal session, even
