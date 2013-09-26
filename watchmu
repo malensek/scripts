@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+################################################################################
+# watchmu - this script launches mupdf with whatever arguments are provided and
+# then automatically reloads the PDF whenever it changes on disk.  Eventually
+# mupdf is supposed to support automatic reloads natively, but for the time
+# being this hack works.  This is nice for automatically updating PDF output
+# from latex.
+#
+# (If you've never used mupdf before, it's a great lightweight PDF viewer.
+# see http://www.mupdf.com/ for details)
+#
+# Usage:
+#   watchmu ./my_thesis.pdf
+#   watchmu -r92 ~/stuff/important_paper.pdf
+#
+# Version 1
+# Matthew Malensek <matthew@malensek.net>
+################################################################################
+
+kill_mu() {
+    kill ${mupid}
+}
+trap kill_mu SIGINT SIGTERM
+
+mupdf ${@} &
+mupid=${!}
+filename="$(basename ${!#})"
+
+while true; do
+    if ! ps -p ${mupid} &> /dev/null; then
+        break
+    fi
+
+    inotifywait -qq -e close ${!#}
+    xdotool search --pid ${mupid} --name "${filename}" key 'r' &> /dev/null
+done
