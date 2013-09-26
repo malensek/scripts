@@ -9,6 +9,10 @@
 # (If you've never used mupdf before, it's a great lightweight PDF viewer.
 # see http://www.mupdf.com/ for details)
 #
+# Dependencies:
+#  - inotifywait: https://github.com/rvoicilas/inotify-tools
+#  - xdotool: http://www.semicomplete.com/projects/xdotool/
+#
 # Usage:
 #   watchmu ./my_thesis.pdf
 #   watchmu -r92 ~/stuff/important_paper.pdf
