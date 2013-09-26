@@ -16,6 +16,6 @@
 while true; do
     inotifywait -qq -r .
     if ! make -q; then
-        make && echo "--> BUILD OK"
+        make && echo "--> BUILD OK" && date
     fi
 done
