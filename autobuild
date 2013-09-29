@@ -9,13 +9,13 @@
 #   cd wherever/project
 #   autobuild
 #
-# Version 1
+# Version 2
 # Matthew Malensek <matthew@malensek.net>
 ################################################################################
 
 while true; do
-    inotifywait -qq -r .
+    inotifywait -qq -e modify -r .
     if ! make -q; then
-        make && echo "--> BUILD OK" && date
+        make && echo -n "--> BUILD OK: " && date
     fi
 done
