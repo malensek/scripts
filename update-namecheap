@@ -2,6 +2,8 @@
 ################################################################################
 # update-namecheap - simple script for updating Namecheap's dynamic DNS service.
 #
+# Dependencies: curl (should be found almost everywhere)
+#
 # Version 1
 # Matthew Malensek <matthew@malensek.net>
 ################################################################################
