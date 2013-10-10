@@ -4,19 +4,21 @@
 # like tmux or screen to have an automatically-attached terminal session, even
 # while switching between networks/interfaces.
 #
-# Version 1
+# Version 2
 # Matthew Malensek <matthew@malensek.net>
 ################################################################################
-# Default Options:
+# Default Options (set RESSH_OPTS to override)
 # Close hung connections quickly:
-ssh_options="-oServerAliveInterval=1 -oServerAliveCountMax=3 -t"
+ssh_options="${RESSH_OPTS:--oServerAliveInterval=1 -oServerAliveCountMax=3 -t}"
 sleep_time=1
 unset verbose
 ################################################################################
 
+script_name=$(basename ${0})
+
 print_usage() {
 cat <<EOM
-Usage: $(basename ${0}) [options] [user@]hostname [ssh-options] command
+Usage: ${script_name} [options] [user@]hostname [ssh-options] command
     -s <number>    Seconds to sleep between connection retries. \
 Default: ${sleep_time}
     -v             Verbose output; don't clear the screen
@@ -31,7 +33,7 @@ while getopts "s:v" flag; do
     esac
 done
 
-shift $(($OPTIND-1))
+shift $(($OPTIND - 1))
 
 # make sure we have at least 2 parameters
 if [[ ${#} -lt 2 ]]; then
@@ -42,7 +44,7 @@ fi
 destination=${1}
 shift
 
-while :; do # loop forever
+while true; do
     ssh ${ssh_options} ${destination} ${@}
     # exit status is 255 if an error occurred; otherwise the remote command
     # returned successfully.
