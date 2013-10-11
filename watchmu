@@ -35,6 +35,6 @@ while true; do
         break
     fi
 
-    inotifywait -qq -e close ${!#}
+    inotifywait -qq -e close_write ${!#}
     xdotool search --pid ${mupid} --name "${filename}" key 'r' &> /dev/null
 done
