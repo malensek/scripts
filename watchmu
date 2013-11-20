@@ -17,14 +17,20 @@
 #   watchmu ./my_thesis.pdf
 #   watchmu -r92 ~/stuff/important_paper.pdf
 #
-# Version 1
+# Version 2
 # Matthew Malensek <matthew@malensek.net>
 ################################################################################
 
 kill_mu() {
     kill ${mupid}
+    exit $?
 }
 trap kill_mu SIGINT SIGTERM
+
+wait_mu() {
+    inotifywait -qq -e close ${@}
+    while inotifywait -qq -t1 -e close ${@}; do :; done
+}
 
 mupdf ${@} &
 mupid=${!}
@@ -35,6 +41,6 @@ while true; do
         break
     fi
 
-    inotifywait -qq -e close_write ${!#}
+    wait_mu ${!#}
     xdotool search --pid ${mupid} --name "${filename}" key 'r' &> /dev/null
 done
