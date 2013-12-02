@@ -9,9 +9,11 @@
 #   cd wherever/project
 #   autobuild
 #
-# Version 2
+# Version 3
 # Matthew Malensek <matthew@malensek.net>
 ################################################################################
+
+make
 
 while true; do
     inotifywait -qq -e modify -r .
