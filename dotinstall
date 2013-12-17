@@ -1,0 +1,27 @@
+#!/bin/bash
+
+excludes=(".git")
+
+excluded() {
+    for exclude in ${excludes[@]}; do
+        if [[ "$(basename "${1}")" == "${exclude}" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+link_dotfiles() {
+    for conf in "${@}/"*; do
+        if excluded "${conf}"; then
+            continue
+        fi
+        ln -vs "${conf}" 
+    done
+}
+
+shopt -s dotglob #allow globbing on dotfiles
+dotdir=$(pwd)
+cd
+
+link_dotfiles "${dotdir}"
