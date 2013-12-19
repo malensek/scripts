@@ -1,7 +1,13 @@
 #!/bin/bash
 
+unset dotdir
+
+shopt -s dotglob #Allow globbing on dotfiles
+
+default_dir="${HOME}/.dot"
 excludes=(".git")
 
+# Determines if a given file is excluded.
 excluded() {
     for exclude in ${excludes[@]}; do
         if [[ "$(basename "${1}")" == "${exclude}" ]]; then
@@ -11,17 +17,44 @@ excluded() {
     return 1
 }
 
+# Links dotfiles in ${@} to the current directory.
 link_dotfiles() {
-    for conf in "${@}/"*; do
-        if excluded "${conf}"; then
+    for dot in "${@}/"*; do
+        if excluded "${dot}"; then
             continue
         fi
-        ln -vs "${conf}" 
+        ln -vs "${dot}" 
     done
 }
 
-shopt -s dotglob #allow globbing on dotfiles
-dotdir=$(pwd)
-cd
+if [[ -z "${dotdir}" ]]; then
+    # Can we use the default dot directory?
+    if [[ -e "${default_dir}" ]]; then
+        dotdir="${default_dir}"
+    fi
 
-link_dotfiles "${dotdir}"
+    # How about the DOTDIR environment variable? (overrides the default dir)
+    if [[ -n "${DOTDIR}" ]]; then
+        dotdir="${DOTDIR}"
+    fi
+
+    # Didn't find a dotfile directory.
+    if [[ -z "${dotdir}" ]]; then
+        echo "Could not locate dotfile directory!"
+        exit 1
+    fi
+fi
+
+if [[ ! -e "${dotdir}" ]]; then
+    echo "Dotfile directory could not be found: ${dotdir}"
+    exit 1
+fi
+
+cd "${dotdir}"
+echo "Updating dotfile repository from master."
+git checkout master && (git remote update -p; git merge --ff-only '@{u}')
+echo "Remember to push out any updates you've made!"
+
+cd "${HOME}"
+
+#link_dotfiles "${dotdir}"
