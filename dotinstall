@@ -1,12 +1,28 @@
 #!/bin/bash
+################################################################################
 
 unset dotdir
 
 shopt -s dotglob #Allow globbing on dotfiles
 
 default_dir="${HOME}/.dot"
-override=$(hostname)
+override=$(hostname -s)
 excludes=(".git" "overrides")
+
+################################################################################
+
+print_usage() {
+cat <<EOM
+Usage: $(basename ${0}) [-d dot_dir] [-o override]
+    -d dot_dir: Specifies the directory where dotfiles are stored.  This
+       defaults to ~/.dot, but can also be set by the DOTDIR environment
+       variable.
+    -o override: Specifies an override configuration to use rather than the
+       default, which is based on the current machine hostname
+       (DOTDIR/overrides/$(hostname -s)).  This can be used for machine-specific
+       configuration, and overrides the "core" configuration (DOTDIR/*).
+EOM
+}
 
 # Determines if a given file is excluded.
 excluded() {
@@ -27,6 +43,16 @@ link_dotfiles() {
         ln -vs "${dot}" 
     done
 }
+
+################################################################################
+
+while getopts "d:o:" flag; do
+    case ${flag} in
+        d) dotdir=${OPTARG} ;;
+        o) override=${OPTARG} ;;
+        ?) print_usage; exit 1 ;;
+    esac
+done
 
 if [[ -z "${dotdir}" ]]; then
     # Can we use the default dot directory?
@@ -58,7 +84,9 @@ git checkout master && (git remote update -p; git merge --ff-only '@{u}')
 cd "${HOME}"
 
 overdir="${dotdir}/overrides/${override}"
-if [[ -d "${overdir}" ]]; then
+if [[ ! -d "${overdir}" ]]; then
+    echo "No override configuration found for '${override}.'"
+else
     echo "Configuration: ${override}"
     link_dotfiles "${overdir}"
 fi
