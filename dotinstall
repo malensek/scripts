@@ -5,6 +5,7 @@ unset dotdir
 shopt -s dotglob #Allow globbing on dotfiles
 
 default_dir="${HOME}/.dot"
+override=$(hostname)
 excludes=(".git")
 
 # Determines if a given file is excluded.
@@ -53,8 +54,14 @@ fi
 cd "${dotdir}"
 echo "Updating dotfile repository from master."
 git checkout master && (git remote update -p; git merge --ff-only '@{u}')
-echo "Remember to push out any updates you've made!"
 
 cd "${HOME}"
 
-#link_dotfiles "${dotdir}"
+overdir="${dotdir}/${override}"
+if [[ -d "${overdir}" ]]; then
+    echo "Configuration: ${override}"
+    link_dotfiles "${overdir}"
+fi
+
+echo "Configuration: core"
+link_dotfiles "${dotdir}"
