@@ -77,12 +77,7 @@ if [[ ! -e "${dotdir}" ]]; then
     exit 1
 fi
 
-cd "${dotdir}"
-echo "Updating dotfile repository from master."
-git checkout master && (git remote update -p; git merge --ff-only '@{u}')
-
 cd "${HOME}"
-
 overdir="${dotdir}/overrides/${override}"
 if [[ ! -d "${overdir}" ]]; then
     echo "No override configuration found for '${override}.'"
