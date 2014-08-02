@@ -5,10 +5,9 @@ def printchng(nums):
     nums = map(Decimal, nums)
     p = None
     for n in nums:
-        if p is None:
-            p = n
-            continue
-        print((n - p) / p)
+        if p != None:
+            change = (n - p) / p
+            print("%g%%" % (change * 100))
         p = n
 
 if __name__ == "__main__":
