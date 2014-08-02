@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 def printchng(nums):
-    nums = map(float, nums)
+    from decimal import Decimal
+    nums = map(Decimal, nums)
     p = None
     for n in nums:
         if p is None:
