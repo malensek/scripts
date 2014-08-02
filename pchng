@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+################################################################################
+# pchng - a really simple tool to calculate the percent change between args.
+# Yep, that's pretty much all there is to it.
+#
+# Version 1
+# Matthew Malensek <matthew@malensek.net>
+################################################################################
 
 def printchng(nums):
     from decimal import Decimal
