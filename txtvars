@@ -1,0 +1,18 @@
+#!/bin/bash
+################################################################################
+# txtvars - script for pulling 'variables' out of a text file, where a variable
+#           might be something of the form:
+#
+#           varname=somevalue
+#
+################################################################################
+
+if [[ -z ${1} ]]; then
+    echo "Usage: $(basename ${0}) variable_name"
+    echo "Expects input from stdin."
+    exit 1;
+fi
+
+var_name=${1}
+
+grep -io "${var_name}=.*" | sed 's/.*=//g; s/ .*//g'
