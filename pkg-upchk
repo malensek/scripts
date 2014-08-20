@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+################################################################################
+# pkg-upchk - uses the FreeBSD pkg tool to check for updates and sends an email
+# if there are any available.
+#
+# Version 1
+# Matthew Malensek <matthew@malensek.net>
+################################################################################
+
+if [[ ${#} -lt 1 ]]; then
+    echo "Usage: $(basename ${0}) email@address.com"
+    exit 1
+fi
+
+mail_to="${1}"
+
+# get the list of new updates. Packages are prefixed with tab characters.
+update_list=$(pkg upgrade --fetch-only --dry-run | sed -n "s/^"$'\t'"//gp")
+num_updates=$(wc -l <<< "${update_list}")
+
+if [[ $num_updates -gt 0 && $update_list != "" ]]; then
+    echo "$update_list" | mail -s "$subject" $mail_to
+fi
