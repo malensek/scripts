@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ################################################################################
 # txtvars - script for pulling 'variables' out of a text file, where a variable
 #           might be something of the form:
