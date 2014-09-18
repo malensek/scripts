@@ -18,6 +18,8 @@ mail_to="${1}"
 update_list=$(pkg upgrade --fetch-only --dry-run | sed -n "s/^"$'\t'"//gp")
 num_updates=$(wc -l <<< "${update_list}")
 
+subject="$num_updates updates available for $(hostname)"
+
 if [[ $num_updates -gt 0 && $update_list != "" ]]; then
     echo "$update_list" | mail -s "$subject" $mail_to
 fi
