@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+################################################################################
+# rescp - retries failed scp operations.  This script is useful in situations
+# where the remote host may stop responding temporarily or over flaky
+# connections.
+#
+# Version 1
+# Matthew Malensek <matthew@malensek.net>
+################################################################################
+
+retries=32
+sleep_time=1
+
+print_usage() {
+progname=$(basename ${0})
+cat <<EOM
+Usage: ${progname} [-n num_retries] [-s sleep_time] <SCP_ARGS>
+    -n num_retries: Specifies the number of times ${progname} should retry the
+                    scp operation.
+    -s sleep_time:  Sets the delay between retries.
+
+NOTE: The arguments for ${progname} **MUST** come before scp arguments for
+correct parsing.
+
+Examples:
+    rescp -n 1024 -s10 -r ~/somedir somehost:storagedir/
+    (retry 1024 times, wait 10 seconds between retries, recursive copy)
+
+    rescp -n 3 -s0 -C myfile.txt somewhere.net:
+    (retry 3 times, don't wait between retries, use compression)
+
+EOM
+}
+
+ignored=0
+OPTERR=0
+while getopts "n:s:" flag; do
+    case ${flag} in
+        n) retries="${OPTARG}" ;;
+        s) sleep_time="${OPTARG}" ;;
+        *) (( ignored++ ));;
+    esac
+done
+
+argidx=$(( $OPTIND - 1 - $ignored ))
+
+if [[ ${#} -lt 2 || ${argidx} -lt 0 ]]; then
+    print_usage
+    exit 1
+fi
+
+shift "${argidx}"
+
+for (( i = 0; i < "${retries}"; ++i )); do
+    scp ${@}
+    return="${?}"
+
+    if [[ ${return} -eq 0 ]]; then
+        exit ${return}
+    else
+        sleep "${sleep_time}"
+    fi
+done
+
+echo "Maximum number of retries exhausted.  Exiting."
+exit ${return}
