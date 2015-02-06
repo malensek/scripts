@@ -40,7 +40,7 @@ link_dotfiles() {
         if excluded "${dot}"; then
             continue
         fi
-        ln -vs "${dot}" 
+        ln -vs "${dot}"
     done
 }
 

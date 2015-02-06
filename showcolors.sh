@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 print_strip() {
     for ((color = ${1}; color < ${2}; ++color)); do
