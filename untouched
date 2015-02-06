@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+################################################################################
+# untouched - determines whether or not a directory has been changed in the
+# last N days. All subdirectories and files within the directory are considered.
+#
+# Version 1
+# Matthew Malensek <matthew@malensek.net>
+################################################################################
+
+verbose=false
+
+print_usage() {
+cat <<EOM
+Usage: $(basename ${0}) [-v] dir num_days
+    Determines whether the contents of 'dir' have changed in the last 'num_days'
+    days.
+    
+    Additional options:
+    -v    Verbose mode. Files and directories that have changed are printed.
+
+    Returns: zero if no changes were found, nonzero otherwise. If possible, the
+    nonzero return code will reflect the number of files or directories that
+    have changed (limited to 255 changes)
+
+EOM
+}
+
+while getopts "v" flag; do
+    case ${flag} in
+        v) verbose=true ;;
+        ?) print_usage; exit 1 ;;
+    esac
+done
+shift $(($OPTIND - 1))
+
+if [[ ${#} -ne 2 ]]; then
+    print_usage
+    exit 1
+fi
+
+dir=${1}
+days=${2}
+
+changed=$(find "${dir}" -ctime -"${days}d")
+
+if [[ "${changed}" == "" ]]; then
+    exit 0
+else
+    if [[ ${verbose} == true ]]; then
+        echo "${changed}"
+    fi
+    num_changed=$(echo "${changed}" | wc -l)
+    exit ${num_changed}
+fi
