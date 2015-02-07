@@ -41,6 +41,11 @@ fi
 dir=${1}
 days=${2}
 
+if [[ ! -d "${dir}" ]]; then
+    >&2 echo "Directory not found: ${dir}"
+    exit 1
+fi
+
 changed=$(find "${dir}" -ctime -"${days}d")
 
 if [[ "${changed}" == "" ]]; then
