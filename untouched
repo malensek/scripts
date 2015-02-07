@@ -12,13 +12,15 @@ verbose=false
 print_usage() {
 cat <<EOM
 Usage: $(basename ${0}) [-v] dir num_days
-    Determines whether the contents of 'dir' have changed in the last 'num_days'
-    days.
-    
-    Additional options:
+
+Determines whether the contents of 'dir' have changed in the last 'num_days'
+days.
+
+Additional options:
     -v    Verbose mode. Files and directories that have changed are printed.
 
-    Returns: zero if no changes were found, nonzero otherwise. If possible, the
+Returns:
+    zero if no changes were found, nonzero otherwise. If possible, the
     nonzero return code will reflect the number of files or directories that
     have changed (limited to 255 changes)
 
