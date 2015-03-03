@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+################################################################################
+# zpool-check - Checks the current zpool status for any errors. If errors exist,
+# an email will be sent to the address specified in the first command line
+# argument.
+#
+# Version 1
+# Matthew Malensek <matthew@malensek.net>
+################################################################################
+
+if [[ ${#} -ne 1 ]]; then
+    echo "Usage: $(basename ${0}) email@address.com"
+    exit 1
+fi
+
+status=$(zpool status -x)
+if [[ "${status}" == "all pools are healthy" ]]; then
+    exit 0
+fi
+
+mail_to="${1}"
+subject="Warning: zpool error on $(hostname)"
+echo "$status" | mail -s "$subject" $mail_to
