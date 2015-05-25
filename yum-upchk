@@ -3,7 +3,7 @@
 # yum-upchk - uses yum to check for updates and sends an email if there are any
 # available.
 #
-# Version 2
+# Version 3
 # Matthew Malensek <matthew@malensek.net>
 ################################################################################
 
@@ -15,10 +15,15 @@ fi
 mail_to="${1}"
 
 # get the list of new updates, and remove any blank lines
-update_list=$(yum --debuglevel=0 --errorlevel=0 check-update | sed '/^$/d')
+update_list=$(yum --debuglevel=0 --errorlevel=0 check-update)
+result=${?}
+update_list=$(sed '/^$/d' <<< "${update_list}")
 num_updates=$(wc -l <<< "${update_list}")
 
 subject="$num_updates updates available for $(hostname)"
+if [[ ${result} -ne 0 ]]; then
+    subject="Error checking for updates on $(hostname)"
+fi
 
 if [[ $num_updates -gt 0 && $update_list != "" ]]; then
     echo "$update_list" | mail -s "$subject" $mail_to
