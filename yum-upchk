@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 ################################################################################
 # yum-upchk - uses yum to check for updates and sends an email if there are any
-# available.
+# available. Requires a working 'mail' command (you may need to install the
+# 'mailx' package or similar).
 #
 # Version 2
 # Matthew Malensek <matthew@malensek.net>
