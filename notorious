@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+source=${1}
+read host dest <<< $(IFS=":"; echo ${2})
+
+tar -c ${source} | ssh "${host}" "tar -C '${dest}' -vxf -" 2>&1 | \
+    while read i; do
+        # Progress
+        echo 'x'
+    done
