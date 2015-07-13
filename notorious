@@ -1,10 +1,29 @@
 #!/usr/bin/env bash
 
+progress_size=25
+
+progress() {
+    perc=$(awk "BEGIN { print int(${1} / ${2} * 100) } ")
+    bars=$(( perc / (100 / progress_size) ))
+    echo -ne '\r['
+    for (( i=0; i < ${progress_size}; ++i, --bars )); do
+        if [[ ${bars} -gt 0 ]]; then echo -n '='; else echo -n ' '; fi
+    done
+    echo -n "]  ${1}/${2} (${perc}%) "
+}
+
 source=${1}
 read host dest <<< $(IFS=":"; echo ${2})
 
-tar -c ${source} | ssh "${host}" "tar -C '${dest}' -vxf -" 2>&1 | \
-    while read i; do
-        # Progress
-        echo 'x'
+num_files=$(ls -1 "${source}" | wc -l)
+num_finished=0
+timer=0
+
+tar -c ${source} | ssh -c arcfour "${host}" "tar -C '${dest}' -vxf -" 2>&1 | \
+    while read; do
+        (( ++num_finished ))
+        if [[ ${SECONDS} -gt ${timer} ]]; then
+            timer=${SECONDS}
+            progress ${num_finished} ${num_files} &
+        fi
     done
