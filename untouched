@@ -20,9 +20,7 @@ Additional options:
     -v    Verbose mode. Files and directories that have changed are printed.
 
 Returns:
-    zero if no changes were found, nonzero otherwise. If possible, the
-    nonzero return code will reflect the number of files or directories that
-    have changed (limited to 255 changes)
+    zero if no changes were found, nonzero otherwise.
 
 EOM
 }
@@ -56,6 +54,5 @@ else
     if [[ ${verbose} == true ]]; then
         echo "${changed}"
     fi
-    num_changed=$(echo "${changed}" | wc -l)
-    exit ${num_changed}
+    exit 1;
 fi
