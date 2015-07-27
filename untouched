@@ -48,7 +48,7 @@ if [[ ! -d "${dir}" ]]; then
     exit 1
 fi
 
-changed=$(find "${dir}" -ctime -"${days}d")
+changed=$(find "${dir}" -ctime -"${days}")
 
 if [[ "${changed}" == "" ]]; then
     exit 0
