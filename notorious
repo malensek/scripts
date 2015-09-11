@@ -1,4 +1,13 @@
 #!/usr/bin/env bash
+################################################################################
+# notorious - scp for big quantities of small files. This script automates the
+# process of tarring up a directory of small files, transferring them, and then
+# untarring them on the other side. This can improve performance when
+# transferring tons of tiny, tiny files.
+#
+# Version 1
+# Matthew Malensek <matt@malensek.net>
+################################################################################
 
 progress_size=25
 
