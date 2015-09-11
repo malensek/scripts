@@ -4,7 +4,7 @@
 # last N days. All subdirectories and files within the directory are considered.
 #
 # Version 1
-# Matthew Malensek <matthew@malensek.net>
+# Matthew Malensek <matt@malensek.net>
 ################################################################################
 
 verbose=false

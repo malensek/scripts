@@ -5,7 +5,7 @@
 # argument.
 #
 # Version 1
-# Matthew Malensek <matthew@malensek.net>
+# Matthew Malensek <matt@malensek.net>
 ################################################################################
 
 if [[ ${#} -ne 1 ]]; then

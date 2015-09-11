@@ -4,7 +4,7 @@
 # if there are any available.
 #
 # Version 1
-# Matthew Malensek <matthew@malensek.net>
+# Matthew Malensek <matt@malensek.net>
 ################################################################################
 
 if [[ ${#} -lt 1 ]]; then

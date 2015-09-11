@@ -5,7 +5,7 @@
 # while switching between networks/interfaces.
 #
 # Version 2
-# Matthew Malensek <matthew@malensek.net>
+# Matthew Malensek <matt@malensek.net>
 ################################################################################
 # Default Options (set RESSH_OPTS to override)
 # Close hung connections quickly:
