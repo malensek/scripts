@@ -27,6 +27,11 @@ progress() {
     echo -n "]  ${1}/${2} (${perc}%) "
 }
 
+if [[ ${#} -ne 2 ]]; then
+    print_usage
+    exit 1
+fi
+
 source=${1}
 read host dest <<< $(IFS=":"; echo ${2})
 
