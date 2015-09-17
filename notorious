@@ -11,6 +11,12 @@
 
 progress_size=25
 
+print_usage() {
+cat <<EOM
+Usage: $(basename ${0}) source dest-host:dest-dir
+EOM
+}
+
 progress() {
     perc=$(awk "BEGIN { print int(${1} / ${2} * 100) } ")
     bars=$(( perc / (100 / progress_size) ))
