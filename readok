@@ -5,12 +5,17 @@ uid=$(id -u "${username}")
 groups=$(id -G "${username}")
 
 abs_path=$(readlink -f "${2}")
+if [[ ${?} -ne 0 || ! -e "${abs_path}" ]]; then
+    echo "[FAIL] Could not read path"
+    exit 1
+fi
 echo "${abs_path}"
 
 path=""
 IFS='/' read -ra part <<< "${abs_path}"
 for i in "${part[@]:1}"; do
     path="${path}/${i}"
+
     stat -c "%A %U %G %N" "${path}"
     f_mod=$(stat -c "0%a" "${path}")
     f_uid=$(stat -c "%u" "${path}")
