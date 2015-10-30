@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+if [[ ${#} -ne 1 ]]; then
+    echo "Not enough arguments!"
+    exit 1
+fi
+
+dataset="${1}"
+
+snap_name=$(date '+%F')
+snapshots=$(zfs list -H -t snapshot -o name -r "${dataset}" \
+    | sed "s|${dataset}@||g")
+
+for snapshot in ${snapshots}; do
+    if [[ "${snap_name}" == "${snapshot}" ]]; then
+        echo "Snapshot already exists; aborting"
+        exit 1
+    fi
+done
+
+zfs snapshot "${dataset}@${snap_name}"
+
