@@ -1,6 +1,21 @@
 #!/usr/bin/env bash
+################################################################################
+# notorious - scp for big quantities of small files. This script automates the
+# process of tarring up a directory of small files, transferring them, and then
+# untarring them on the other side. This can improve performance when
+# transferring tons of tiny, tiny files.
+#
+# Version 1
+# Matthew Malensek <matt@malensek.net>
+################################################################################
 
 progress_size=25
+
+print_usage() {
+cat <<EOM
+Usage: $(basename ${0}) source dest-host:dest-dir
+EOM
+}
 
 progress() {
     perc=$(awk "BEGIN { print int(${1} / ${2} * 100) } ")
@@ -11,6 +26,11 @@ progress() {
     done
     echo -n "]  ${1}/${2} (${perc}%) "
 }
+
+if [[ ${#} -ne 2 ]]; then
+    print_usage
+    exit 1
+fi
 
 source=${1}
 read host dest <<< $(IFS=":"; echo ${2})

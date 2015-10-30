@@ -5,7 +5,7 @@
 # Dependencies: curl (should be found almost everywhere)
 #
 # Version 1
-# Matthew Malensek <matthew@malensek.net>
+# Matthew Malensek <matt@malensek.net>
 ################################################################################
 
 unset username password ip

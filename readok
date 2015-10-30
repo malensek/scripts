@@ -1,0 +1,61 @@
+#!/bin/bash
+
+username="${1}"
+uid=$(id -u "${username}")
+groups=$(id -G "${username}")
+
+abs_path=$(readlink -f "${2}")
+if [[ ${?} -ne 0 || ! -e "${abs_path}" ]]; then
+    echo "[FAIL] Could not read path"
+    exit 1
+fi
+echo "${abs_path}"
+
+path=""
+IFS='/' read -ra part <<< "${abs_path}"
+for i in "${part[@]:1}"; do
+    path="${path}/${i}"
+
+    stat -c "%A %U %G %N" "${path}"
+    f_mod=$(stat -c "0%a" "${path}")
+    f_uid=$(stat -c "%u" "${path}")
+    f_gid=$(stat -c "%g" "${path}")
+
+    # Determine the mode to check for based on file. If we are inspecting a
+    # directory, execute permissions suffice. Otherwise, check for read
+    # permissions.
+    test_mod=01
+    if [[ -f "${path}" ]]; then
+        test_mod=04
+    fi
+
+    # File owner check
+    if [[ ${uid} -eq ${f_uid} ]]; then
+        test=$(( ${test_mod} << 6 ))
+        if [[ $(( ${f_mod} & ${test} )) -gt 0 ]]; then
+            continue
+        fi
+    fi
+
+    # Group check
+    for group in ${groups}; do
+        if [[ ${group} -eq ${f_gid} ]]; then
+            test=$(( ${test_mod} << 3 ))
+            if [[ $(( ${f_mod} & ${test} )) -gt 0 ]]; then
+                continue 2 # Continue on the outer loop
+            fi
+        fi
+    done
+
+    # World
+    if [[ $(( ${f_mod} & ${test_mod} )) -gt 0 ]]; then
+        continue
+    fi
+
+    # If none of the above were readable, then we've hit a wall.
+    echo "[FAIL] ${username} cannot access ${path}"
+    exit 1
+done
+
+echo "[ OK ] ${username} can access ${abs_path}"
+exit 0

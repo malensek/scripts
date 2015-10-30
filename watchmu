@@ -18,7 +18,7 @@
 #   watchmu -r92 ~/stuff/important_paper.pdf
 #
 # Version 2
-# Matthew Malensek <matthew@malensek.net>
+# Matthew Malensek <matt@malensek.net>
 ################################################################################
 
 kill_mu() {

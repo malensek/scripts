@@ -11,7 +11,7 @@
 #    stddev: 10.4792
 #
 # Version 2
-# Matthew Malensek <matthew@malensek.net>
+# Matthew Malensek <matt@malensek.net>
 ################################################################################
 
 def printstats(fname, printname=False):
