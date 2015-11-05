@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+################################################################################
+# zsnap - A very simple zfs snapshot management script.
+#
+# Version 1
+# Matthew Malensek <matt@malensek.net>
+################################################################################
+
+
 
 if [[ ${#} -ne 1 ]]; then
     echo "Not enough arguments!"
