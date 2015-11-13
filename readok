@@ -1,4 +1,13 @@
 #!/bin/bash
+################################################################################
+# readok - determines whether a user can read a file by inspecting the
+# permissions at each level in the path hierarchy and printing out helpful
+# information about the permissions.
+#
+# Version 1
+# Matthew Malensek <matt@malensek.net>
+################################################################################
+
 
 username="${1}"
 uid=$(id -u "${username}")
