@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 ################################################################################
+# dotinstall - installs dotfiles from a base location (~/.dot, for instance) by
+# symlinking them into the user's home directory.
+#
+# Version 1
+# Matthew Malensek <matt@malensek.net>
+################################################################################
 
 unset dotdir
 
