@@ -1,3 +1,10 @@
+################################################################################
+# TermColors - python utility for setting terminal colors.
+#
+# Version 1
+# Matthew Malensek <matt@malensek.net>
+################################################################################
+
 import os, re, sys, termios, tty
 
 class TermColors:
