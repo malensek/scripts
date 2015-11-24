@@ -7,6 +7,7 @@
 #     echo "Aha!"
 # fi
 ################################################################################
+
 checksu() {
     stdin=$(readlink -f /dev/stdin)
     if [[ ! -e "${stdin}" ]]; then # This will fail if non-interactive
