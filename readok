@@ -14,8 +14,12 @@ if [[ ${#} -ne 2 ]]; then
 fi
 
 username="${1}"
-uid=$(id -u "${username}")
-groups=$(id -G "${username}")
+uid=$(id -u "${username}" 2> /dev/null)
+if [[ ${?} -ne 0 ]]; then
+    echo "User not found: ${username}"
+    exit 1
+fi
+groups=$(id -G "${username}" 2> /dev/null)
 
 abs_path=$(readlink -f "${2}")
 if [[ ${?} -ne 0 || ! -e "${abs_path}" ]]; then
