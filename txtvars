@@ -9,7 +9,7 @@
 # Matthew Malensek <matt@malensek.net>
 ################################################################################
 
-if [[ -z ${1} ]]; then
+if [[ -z "${1}" ]]; then
     echo "Usage: $(basename ${0}) variable_name"
     echo "Expects input from stdin."
     exit 1;
