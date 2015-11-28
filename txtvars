@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 ################################################################################
 # txtvars - script for pulling 'variables' out of a text file, where a variable
-#           might be something of the form:
+#           is something of the form:
 #
 #           varname=somevalue
 #
+# Version 1
+# Matthew Malensek <matt@malensek.net>
 ################################################################################
 
 if [[ -z ${1} ]]; then
