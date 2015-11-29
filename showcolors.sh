@@ -19,21 +19,9 @@ print_strip 0 8
 print_strip 8 16
 echo
 print_strip 0 8 "     "
-print_strip 0 8 "  X  "
+print_strip 0 8 "     "
 print_strip 0 8 "     "
 print_strip 8 16 "     "
-print_strip 8 16 "  X  "
+print_strip 8 16 "     "
 print_strip 8 16 "     "
 echo
-print_strip 0 8 "hello"
-print_strip 8 16 "world"
-echo
-print_plain 0 8 "     "
-print_plain 0 8 "  X  "
-print_plain 0 8 "     "
-print_plain 8 16 "     "
-print_plain 8 16 "  X  "
-print_plain 8 16 "     "
-echo
-print_plain 0 8 "AbCde"
-print_plain 8 16 "FgHiJ"
