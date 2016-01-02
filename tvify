@@ -10,8 +10,8 @@ EOM
 
 dir=${1}
 
-if [[ ! -d "${1}" ]]; then
-    echo "Not a directory: ${1}"
+if [[ ! -d "${dir}" ]]; then
+    print_usage
     exit 1
 fi
 
