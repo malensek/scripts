@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 ################################################################################
-#
+# tvify - this script takes a folder of images and converts them for display on
+# a 1080p TV (memory stick or similar). Proper image orientation will be
+# maintained, and all available cores will be used to speed up processing.
+################################################################################
 
 print_usage() {
 cat <<EOM
