@@ -4,6 +4,8 @@
 # a 1080p TV (memory stick or similar). Proper image orientation will be
 # maintained, and all available cores will be used to speed up processing.
 #
+# Dependencies: the `mogrify' utility provided with imagemagick
+#
 # Version 1
 # Matthew Malensek <matt@malensek.net>
 ################################################################################
