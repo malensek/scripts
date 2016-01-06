@@ -16,6 +16,13 @@ Usage: $(basename ${0}) <image_dir>
 EOM
 }
 
+# First, make sure we actually have the utility we need.
+which mogrify &> /dev/null
+if [[ ${?} -ne 0 ]]; then
+    echo "Couldn't find 'mogrify' from imagemagick"
+    exit 1
+fi
+
 dir="${1}"
 
 if [[ ! -d "${dir}" ]]; then
@@ -31,3 +38,4 @@ fi
 
 find "${dir}" | xargs -t -n1 -P"${cpus}" \
     mogrify -resize 1920x1080 -auto-orient
+
