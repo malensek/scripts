@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 ################################################################################
 # autobuild - this script will rebuild a project (using make) whenever any
-# dependencies change.  Requires inotify-tools:
-#   https://github.com/rvoicilas/inotify-tools
-# Note: this probably doesn't scale well for large directory trees.
+# dependencies change.
 #
 # Example:
-#   cd wherever/project
-#   autobuild
+#   $ cd wherever/project
+#   $ autobuild
+#
+# Dependencies: inotify-tools
+#     (https://github.com/rvoicilas/inotify-tools)
 #
 # Version 3
 # Matthew Malensek <matt@malensek.net>
