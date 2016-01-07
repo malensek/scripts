@@ -17,8 +17,7 @@
 make
 
 while true; do
-    fswatch --one-event --latency=0.15 . &> /dev/null
-    #inotifywait -qq -e modify -r .
+    inotifywait -qq -e modify -r .
     if ! make -q; then
         make && echo -n "--> BUILD OK: " && date
     fi
