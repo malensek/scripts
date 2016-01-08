@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 ################################################################################
-# imgdaten - image date numberer script. This script reads a directory of image
-# files' EXIF data and then renumbers the files in chronological order. Helpful
-# if a set of images were produced by two different cameras with different
-# numbering schemes.
+# imgdaten - image date numbering script. This script reads a directory of image
+# files' EXIF data and then renumbers the files in chronological order (0000,
+# 0001, 0002, etc). Helpful if a set of images were produced by two different
+# cameras with different numbering schemes.
 #
-# External Dependency: exiftool
+# Dependencies: exiftool
+#
+# Version 1
+# Matthew Malensek <matt@malensek.net>
 ################################################################################
 
 print_usage() {
