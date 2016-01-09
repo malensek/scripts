@@ -17,7 +17,7 @@ EOM
 }
 
 # First, make sure we actually have the utility we need.
-if ! ( which ls &> /dev/null ); then
+if ! ( which mogrify &> /dev/null ); then
     echo "Couldn't find 'mogrify' command!"
     echo "Please install imagemagick: http://www.imagemagick.org"
     exit 1
