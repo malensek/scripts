@@ -17,6 +17,12 @@ Usage: $(basename ${0}) <image_dir>
 EOM
 }
 
+if ! ( which exiftool &> /dev/null ); then
+    echo "Couldn't find exiftool!"
+    echo "(http://www.sno.phy.queensu.ca/~phil/exiftool/index.html)"
+    exit 1
+fi
+
 dir=${1}
 
 if [[ ! -d "${dir}" ]]; then
