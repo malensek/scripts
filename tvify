@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+################################################################################
+# tvify - this script takes a folder of images and converts them for display on
+# a 1080p TV (memory stick or similar). Proper image orientation will be
+# maintained, and all available cores will be used to speed up processing.
+#
+# Dependencies: `mogrify' utility provided with imagemagick
+#
+# Version 1
+# Matthew Malensek <matt@malensek.net>
+################################################################################
+
+print_usage() {
+cat <<EOM
+Usage: $(basename ${0}) <image_dir>
+EOM
+}
+
+# First, make sure we actually have the utility we need.
+if ! ( which mogrify &> /dev/null ); then
+    echo "Couldn't find 'mogrify' command!"
+    echo "Please install imagemagick: http://www.imagemagick.org"
+    exit 1
+fi
+
+dir="${1}"
+
+if [[ ! -d "${dir}" ]]; then
+    print_usage
+    exit 1
+fi
+
+cpus=$(getconf _NPROCESSORS_ONLN)
+if [[ ${cpus} -le 0 ]]; then
+    echo "Couldn't determine the number of CPUs. Falling back on 1."
+    cpus=1
+fi
+
+find "${dir}" | xargs -t -n1 -P"${cpus}" \
+    mogrify -resize 1920x1080 -auto-orient
+

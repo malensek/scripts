@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+################################################################################
+# imgdaten - image date numbering script. This script reads a directory of image
+# files' EXIF data and then renumbers the files in chronological order (0000,
+# 0001, 0002, etc). Helpful if a set of images were produced by two different
+# cameras with different numbering schemes.
+#
+# Dependencies: exiftool
+#
+# Version 1
+# Matthew Malensek <matt@malensek.net>
+################################################################################
+
+print_usage() {
+cat <<EOM
+Usage: $(basename ${0}) <image_dir>
+EOM
+}
+
+if ! ( which exiftool &> /dev/null ); then
+    echo "Couldn't find exiftool!"
+    echo "(http://www.sno.phy.queensu.ca/~phil/exiftool/index.html)"
+    exit 1
+fi
+
+dir=${1}
+
+if [[ ! -d "${dir}" ]]; then
+    print_usage
+    exit 1
+fi
+
+echo "Reading image EXIF data..."
+timelist=$(exiftool \
+    -p '$dateTimeOriginal'$'\t''$directory/$filename' \
+    -d '%s' \
+    "${dir}" | sort -n)
+
+counter=0
+IFS=$'\n'
+for img in $(echo "${timelist}"); do
+    imgname=$(cut -f 2- <<< "${img}")
+    imgdir=$(dirname "${imgname}")
+    newname=$(printf "%s/%04d.%s" "${imgdir}" ${counter} "${imgname##*.}")
+    mv -v "${imgname}" "${newname}"
+    (( counter++ ))
+done
