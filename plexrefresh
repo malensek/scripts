@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+################################################################################
+# plexrefresh - tells a local Plex Media Server to scan for new items.
+#
+# Version 1
+# Matthew Malensek <matt@malensek.net>
+################################################################################
 
 sections=$(curl 'http://localhost:32400/library/sections/' 2>/dev/null \
     | grep -o 'Location id=\"[0-9]*\"' \
