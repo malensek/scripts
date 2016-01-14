@@ -6,10 +6,12 @@
 # Matthew Malensek <matt@malensek.net>
 ################################################################################
 
+# Note: for portability, we avoid using fancy features of GNU grep.
 sections=$(curl 'http://localhost:32400/library/sections/' 2>/dev/null \
     | grep -o 'Location id=\"[0-9]*\"' \
     | sed 's/Location id=\"\([0-9]*\)\"/\1/g')
 
 for section in ${sections}; do
-    curl "http://localhost:32400/library/sections/${section}/refresh" &>/dev/null
+    curl "http://localhost:32400/library/sections/${section}/refresh" \
+        &>/dev/null
 done
