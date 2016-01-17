@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 ################################################################################
 # remove-audio - removes all audio tracks from a video file using ffmpeg.
+#
+# Dependencies: ffmpeg
 ################################################################################
 
 ffmpeg -i "${1}" -vcodec copy -an "${2}"
