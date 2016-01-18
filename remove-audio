@@ -18,3 +18,4 @@ if [[ -z "${input}" ]]; then
     print_usage
     exit 1
 fi
+ffmpeg -i "${input}" -vcodec copy -an "${output}"
