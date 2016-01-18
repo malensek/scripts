@@ -11,3 +11,10 @@ cat <<EOM
 Usage: $(basename ${0}) input_file [output_file]
 EOM
 }
+input="${1}"
+output="${2}"
+
+if [[ -z "${input}" ]]; then
+    print_usage
+    exit 1
+fi
