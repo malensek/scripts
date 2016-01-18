@@ -18,6 +18,11 @@ if [[ -z "${input}" ]]; then
     print_usage
     exit 1
 fi
+
+if [[ -z "${output}" ]]; then
+    output="${input%.*}-NOAUDIO.${input##*.}"
+fi
+
 echo "Input file: ${input}"
 echo "Output file: ${output}"
 
