@@ -6,3 +6,8 @@
 ################################################################################
 
 ffmpeg -i "${1}" -vcodec copy -an "${2}"
+print_usage() {
+cat <<EOM
+Usage: $(basename ${0}) input_file [output_file]
+EOM
+}
