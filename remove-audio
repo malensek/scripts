@@ -18,4 +18,9 @@ if [[ -z "${input}" ]]; then
     print_usage
     exit 1
 fi
+echo "Input file: ${input}"
+echo "Output file: ${output}"
+
 ffmpeg -i "${input}" -vcodec copy -an "${output}"
+
+echo "Audio removal complete: ${output}"
