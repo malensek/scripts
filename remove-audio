@@ -3,6 +3,9 @@
 # remove-audio - removes all audio tracks from a video file using ffmpeg.
 #
 # Dependencies: ffmpeg
+#
+# Version 1
+# Matthew Malensek <matt@malensek.net>
 ################################################################################
 
 print_usage() {
