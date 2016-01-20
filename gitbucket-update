@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+dir="${1}"
+if [[ -z "${1}" ]]; then
+    echo "No download directory set. Using $(pwd)"
+    dir="."
+fi
+
+# Grab the latest gitbucket version's URL. -L follows the redirect.
+url=$(curl -s -L 'https://github.com/gitbucket/gitbucket/releases/latest' \
+    | grep -o '"/gitbucket/gitbucket/releases/download/.*/gitbucket.war"' \
+    | sed 's|"\(.*\)"|\1|g')
+
+ver=$(sed 's|.*/\(.*\)/gitbucket.war|\1|g' <<< "${url}")
+
+echo "Latest version: ${ver}"
+curl -L "https://github.com/${url}" -o "${ver}.war"
