@@ -26,4 +26,5 @@ if [[ -n "${dir}" ]]; then
 fi
 
 echo "Latest version: ${ver}"
+echo "Downloading to: ${dl}"
 curl -L "https://github.com/${url}" -o "${dl}"
