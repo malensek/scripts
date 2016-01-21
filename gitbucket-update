@@ -42,3 +42,12 @@ fi
 echo "Latest version: ${ver}"
 echo "Downloading to: ${dl}"
 curl -L "https://github.com/${url}" -o "${dl}"
+
+echo "Verifying checksum..."
+md5=$(curl -L "https://github.com/${url}.md5" | awk '{ print $1 }')
+chk=$(checksum "${dl}")
+if [[ "${md5}" != "${chk}" ]]; then
+    echo "ERROR: Checksum mismatch: ${chk}"
+else
+    echo "Checksum ok: ${chk}"
+fi
