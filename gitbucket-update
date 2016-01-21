@@ -25,6 +25,11 @@ if [[ -n "${dir}" ]]; then
     dl="${dir}/${dl}"
 fi
 
+if [[ -e "${dl}" ]]; then
+    echo "File already exists: ${dl}"
+    exit 1
+fi
+
 echo "Latest version: ${ver}"
 echo "Downloading to: ${dl}"
 curl -L "https://github.com/${url}" -o "${dl}"
