@@ -9,9 +9,8 @@
 
 
 dir="${1}"
-if [[ -z "${1}" ]]; then
+if [[ -z "${dir}" ]]; then
     echo "No download directory set. Using $(pwd)"
-    dir="."
 fi
 
 # Grab the latest gitbucket version's URL. -L follows the redirect.
