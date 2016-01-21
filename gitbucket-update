@@ -20,5 +20,10 @@ url=$(curl -s -L 'https://github.com/gitbucket/gitbucket/releases/latest' \
 
 ver=$(sed 's|.*/\(.*\)/gitbucket.war|\1|g' <<< "${url}")
 
+dl="${ver}.war"
+if [[ -n "${dir}" ]]; then
+    dl="${dir}/${dl}"
+fi
+
 echo "Latest version: ${ver}"
-curl -L "https://github.com/${url}" -o "${ver}.war"
+curl -L "https://github.com/${url}" -o "${dl}"
