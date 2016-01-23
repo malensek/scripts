@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 ################################################################################
 # gitbucket-update - downloads the latest version of GitBucket, an open-source
-# GitHub clone (https://github.com/gitbucket/gitbucket).
+# GitHub clone (https://github.com/gitbucket/gitbucket). This script is likely
+# to be a bit brittle, but to the best of my knowledge there is no "clean" way
+# to retrieve the latest project release from GitHub.
 #
 # Version 1
 # Matthew Malensek <matt@malensek.net>
