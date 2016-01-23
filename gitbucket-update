@@ -50,6 +50,7 @@ md5=$(curl -L "https://github.com/${url}.md5" | awk '{ print $1 }')
 chk=$(checksum "${dl}")
 if [[ "${md5}" != "${chk}" ]]; then
     echo "ERROR: Checksum mismatch: ${chk}"
+    echo "                  Remote: ${md5}"
 else
     echo "Checksum ok: ${chk}"
 fi
