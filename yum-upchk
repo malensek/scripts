@@ -8,6 +8,9 @@
 # Matthew Malensek <matt@malensek.net>
 ################################################################################
 
+cmd="dnf"
+command -v dnf &> /dev/null || cmd="yum"
+
 if [[ ${#} -lt 1 ]]; then
     echo "Usage: $(basename ${0}) email@address.com"
     exit 1
@@ -16,7 +19,7 @@ fi
 mail_to="${1}"
 
 # get the list of new updates, and remove any blank lines
-update_list=$(yum --debuglevel=0 --errorlevel=0 check-update | sed '/^$/d')
+update_list=$(${cmd} --debuglevel=0 --errorlevel=0 check-update | sed '/^$/d')
 num_updates=$(wc -l <<< "${update_list}")
 
 subject="$num_updates updates available for $(hostname)"
