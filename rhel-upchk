@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 ################################################################################
-# yum-upchk - uses yum to check for updates and sends an email if there are any
-# available. Requires a working 'mail' command (you may need to install the
+# rhel-upchk - uses either dnf or yum to check for updates (depending on your
+# version of RHEL-based distro) and sends an email if there are any available.
+# Requires a working 'mail' command (you may need to install the
 # 'mailx' package or similar).
 #
-# Version 2
+# Dependencies: mail, mailx, etc.
+#
+# Version 3
 # Matthew Malensek <matt@malensek.net>
 ################################################################################
 
