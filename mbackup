@@ -1,0 +1,100 @@
+#!/bin/bash
+################################################################################
+# mbackup - mobile backup using rsync.
+################################################################################
+unset copy_log exclude
+interval=0
+batt_interval=0
+nice_level=20
+
+script_name=$(basename ${0})
+last_file="${HOME}/.${script_name}.last"
+log_file="${HOME}/.${script_name}.log"
+lock_file="${TMPDIR:-/tmp}/${script_name}.lock"
+################################################################################
+
+print_usage() {
+cat <<EOM
+Usage: ${script_name} [-b batt_interval [-c log_dest] [-e exclude-file]
+       [-i interval] [-n nice] source destination
+
+Syncs 'source' to 'destination' using rsync.  This tool is designed to be run
+as a semi-frequent cron job, but only executes if the specified interval has
+elapsed since the last backup.
+
+Options:
+    * -b batt_interval    interval to use when on battery power.
+    * -c log_dest         copy the backup log to 'log_dest' if errors occur.
+    * -e exclude_file     ignore entries in 'exclude_file' while backing up.
+    * -i interval         number of hours between backups.
+    * -n nice             niceness level; defaults to ${nice_level}.
+EOM
+}
+
+on_battery() {
+    pmset -g batt | grep 'Battery Power' &> /dev/null
+}
+
+while getopts "b:c:e:i:n:" flag; do
+    case ${flag} in
+    b) batt_interval=${OPTARG} ;;
+    c) copy_log=${OPTARG} ;;
+    e) exclude="--exclude-from=${OPTARG}" ;;
+    i) interval=${OPTARG} ;;
+    n) nice_level=${OPTARG} ;;
+    ?) print_usage; exit 1 ;;
+    esac
+done
+
+shift $((OPTIND - 1))
+src=${1}
+dest=${2}
+
+if [[ -z "${src}" || -z "${dest}" ]]; then
+    echo "error: source and destination not specified."
+    print_usage
+    exit 1
+fi
+
+if on_battery; then
+    if [[ ${batt_interval} -gt 0 ]]; then
+        interval=${batt_interval}
+    fi
+fi
+
+# Only execute if (now - last) is greater or equal to the backup interval.
+interval_secs=$((interval * 60 * 60))
+last=$(cat "${last_file}" 2> /dev/null)
+now=$(date +%s)
+if [[ $((now - last)) -lt ${interval_secs} ]]; then
+    exit 0
+fi
+
+# Don't run multiple instances.
+if [[ -e "${lock_file}" ]]; then
+    pid=$(cat "${lock_file}" 2> /dev/null)
+    if ps "${pid}" &> /dev/null; then
+        echo "Backup instance already running."
+        exit 1
+    fi
+fi
+echo $$ > "${lock_file}"
+
+nice -n ${nice_level} \
+        rsync -avz --delete-after --inplace --partial \
+        --exclude=".${script_name}.log" \
+        --exclude=".${script_name}.last" \
+        "${exclude}" \
+        "${src}" "${dest}" &> ${log_file}
+
+result=$?
+rm "${lock_file}"
+
+if [[ ${result} -eq 0 ]]; then
+    date +%s > "${last_file}"
+else
+    if [[ ${result} -ne 255 && -n "${copy_log}" ]]; then
+        cp "${log_file}" "${copy_log}-$(date '+%F')"
+    fi
+    exit 1
+fi
