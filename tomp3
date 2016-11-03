@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+quality=0
+active_threads=0
+max_threads=$(getconf _NPROCESSORS_ONLN)
+
+print_usage() {
+cat <<EOM
+Usage: $(basename ${0}) [-t threads} [-V quality] files_to_convert
+
+$(basename ${0}) converts audio files to VBR mp3s using ffmpeg. Options:
+    * -t threads    Number of threads to use for conversion (default: ${max_threads})
+    * -V quality    The LAME quality level to use (default: ${quality})
+EOM
+}
+
+convert_flac() {
+    from="${1}"
+    to="${from[@]/%flac/mp3}"
+
+    ffmpeg \
+        -i "${from}" \
+        -loglevel quiet \
+        -codec:a libmp3lame -qscale:a "${quality}" \
+        "${to}"
+
+    echo "${from} -> ${to}"
+    kill -s SIGUSR1 $$
+}
+
+thread_done() {
+    (( active_threads-- ))
+}
+trap thread_done SIGUSR1
+
+while getopts "t:V:" flag; do
+    case ${flag} in
+        t) max_threads=${OPTARG} ;;
+        V) quality=${OPTARG} ;;
+        ?) print_usage; exit 1 ;;
+    esac
+done
+
+shift $(($OPTIND - 1))
+
+if [[ -z ${@} ]]; then
+    print_usage
+    exit 1
+fi
+
+for file in ${@}; do
+    convert_flac "${file}" &
+    (( active_threads++ ))
+
+    if [[ ${active_threads} -eq ${max_threads} ]]; then
+        wait
+    fi
+done
+
+until wait; do :; done
