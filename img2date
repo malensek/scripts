@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+################################################################################
+# img2date - 
+#
+# Dependencies: exiftool
+#
+# Version 1
+# Matthew Malensek <matt@malensek.net>
+################################################################################
+
+print_usage() {
+cat <<EOM
+Usage: $(basename ${0}) file1 file2 ... fileN
+EOM
+}
+
+if ! ( which exiftool &> /dev/null ); then
+    echo "Couldn't find exiftool!"
+    echo "(http://www.sno.phy.queensu.ca/~phil/exiftool/index.html)"
+    exit 1
+fi
+
+for file in ${@}; do
+    base=$(basename "${file}")
+    noext="${base%.*}"
+    time=$(exiftool -p '$dateTimeOriginal' -d '%s' "${file}")
+    newname="${file[@]/${noext}/${time}}"
+    mv -v -i "${file}" "${newname}"
+done
