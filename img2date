@@ -11,6 +11,7 @@
 
 print_usage() {
 cat <<EOM
+$(basename ${0}) renames photos based on the date they were captured.
 Usage: $(basename ${0}) file1 file2 ... fileN
 EOM
 }
