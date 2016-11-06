@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 ################################################################################
-# img2date - 
+# img2date - renames photos based on the date/time they were captured. Uses EXIF
+# information to determine the capture date.
 #
 # Dependencies: exiftool
 #
