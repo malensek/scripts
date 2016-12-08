@@ -48,7 +48,7 @@ if [[ -z ${@} ]]; then
     exit 1
 fi
 
-for file in ${@}; do
+for file in "${@}"; do
     convert_flac "${file}" &
     (( active_threads++ ))
 
