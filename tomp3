@@ -14,7 +14,7 @@ $(basename ${0}) converts audio files to VBR mp3s using ffmpeg. Options:
 EOM
 }
 
-convert_flac() {
+convert_audio() {
     from="${1}"
     ext="${from##*.}"
     to="${from[@]/%${ext}/mp3}"
@@ -50,7 +50,7 @@ if [[ -z ${@} ]]; then
 fi
 
 for file in "${@}"; do
-    convert_flac "${file}" &
+    convert_audio "${file}" &
     (( active_threads++ ))
 
     if [[ ${active_threads} -eq ${max_threads} ]]; then
