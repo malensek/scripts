@@ -16,7 +16,8 @@ EOM
 
 convert_flac() {
     from="${1}"
-    to="${from[@]/%flac/mp3}"
+    ext="${from##*.}"
+    to="${from[@]/%${ext}/mp3}"
 
     ffmpeg \
         -i "${from}" \
