@@ -83,7 +83,12 @@ if [[ ! -e "${dotdir}" ]]; then
     exit 1
 fi
 
-cd "${HOME}"
+cd "${HOME}" 2> /dev/null
+if [[ ${?} -ne 0 ]]; then
+    echo "Could not locate home directory: ${HOME}"
+    exit 1
+fi
+
 overdir="${dotdir}/overrides/${override}"
 if [[ ! -d "${overdir}" ]]; then
     echo "No override configuration found for '${override}.'"
