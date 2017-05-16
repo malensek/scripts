@@ -19,7 +19,7 @@ excludes=(".git" "overrides")
 
 print_usage() {
 cat <<EOM
-Usage: $(basename ${0}) [-d dot_dir] [-o override]
+Usage: $(basename "${0}") [-d dot_dir] [-o override]
     -d dot_dir: Specifies the directory where dotfiles are stored.  This
        defaults to ~/.dot, but can also be set by the DOTDIR environment
        variable.
@@ -32,7 +32,7 @@ EOM
 
 # Determines if a given file is excluded.
 excluded() {
-    for exclude in ${excludes[@]}; do
+    for exclude in "${excludes[@]}"; do
         if [[ "$(basename "${1}")" == "${exclude}" ]]; then
             return 0
         fi
