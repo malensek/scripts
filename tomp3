@@ -35,6 +35,11 @@ thread_done() {
 }
 trap thread_done SIGUSR1
 
+if ! ( which ffmpeg &> /dev/null ); then
+    echo "Couldn't find ffmpeg!"
+    exit 1
+fi
+
 while getopts "t:V:" flag; do
     case ${flag} in
         t) max_threads=${OPTARG} ;;
