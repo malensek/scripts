@@ -26,7 +26,7 @@ EOM
 convert_audio() {
     from="${1}"
     ext="${from##*.}"
-    to="${from[@]/%${ext}/mp3}"
+    to="${from[*]/%${ext}/mp3}"
 
     ffmpeg \
         -i "${from}" \
