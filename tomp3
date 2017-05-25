@@ -28,6 +28,11 @@ convert_audio() {
     ext="${from##*.}"
     to="${from[*]/%${ext}/mp3}"
 
+    if [[ -e "${to}" ]]; then
+        echo "File already exists: ${to}"
+        return 1
+    fi
+
     ffmpeg \
         -i "${from}" \
         -loglevel quiet \
