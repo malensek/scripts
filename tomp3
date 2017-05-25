@@ -58,7 +58,7 @@ done
 
 shift $(( OPTIND - 1 ))
 
-if [[ -z ${@} ]]; then
+if [[ ${#} -lt 1 ]]; then
     print_usage
     exit 1
 fi
