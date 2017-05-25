@@ -15,9 +15,9 @@ max_threads=$( \
 
 print_usage() {
 cat <<EOM
-Usage: $(basename ${0}) [-t threads} [-V quality] files_to_convert
+Usage: $(basename "${0}") [-t threads} [-V quality] files_to_convert
 
-$(basename ${0}) converts audio files to VBR mp3s using ffmpeg. Options:
+$(basename "${0}") converts audio files to VBR mp3s using ffmpeg. Options:
     * -t threads    Number of threads to use for conversion (default: ${max_threads})
     * -V quality    The LAME quality level to use (default: ${quality})
 EOM
