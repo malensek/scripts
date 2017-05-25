@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+################################################################################
+# tomp3 - converts audio files to VBR mp3s using ffmpeg.
+#
+# Dependencies: ffmpeg
+#
+# Version 1
+# Matthew Malensek <matt@malensek.net>
+################################################################################
 
 quality=0
 active_threads=0
