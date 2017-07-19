@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+for repo in $(find . -name '.git'); do
+    parent="${repo%/*}"
+    num_commits=$(git -C "${parent}" log --branches --not --remotes \
+        --simplify-by-decoration --decorate --oneline | wc -l)
+    num_changes=$(git -C "${parent}" status -s | wc -l)
+#    git -C "${parent}" ls-remote
+    if (( num_commits == 0 && num_changes == 0 )); then
+        continue
+    fi
+
+
+    echo "-- ${parent} --"
+
+    if (( num_commits > 0 )); then
+        echo "Commits (${num_commits}):"
+        git -C "${parent}" log --branches --not --remotes \
+            --simplify-by-decoration --decorate --oneline
+    fi
+
+    if (( num_changes > 0 )); then
+        echo "Changes (${num_changes}):"
+        git -C "${parent}" status -s
+    fi
+
+    echo
+done
