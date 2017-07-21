@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# scan-git-repos - given a directory that contains a bunch of git repos, this
+# script will display some information about their state.
+#
 
 for repo in $(find . -name '.git'); do
     parent="${repo%/*}"
