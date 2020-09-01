@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+################################################################################
+# uvirsh - runs virsh as a different user by connecting to their session socket.
+#
+# Version 1
+# Matthew Malensek <matt@malensek.net>
+################################################################################
+
+if [[ ${#} -lt 1 ]]; then
+    echo "Usage: $(basename "${0}") username [virsh commands ... ]"
+    exit 1
+fi
+
+user="${1}"
+
+shift
+
+sudo virsh -c "qemu:///session?socket=/var/run/user/$(id -u "${user}")/libvirt/libvirt-sock" ${@}
