@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+git branch -m master main
+git push -u origin main
+echo
+echo "Ok, now Settings -> Branches -> Set default branch to 'main' on Github"
+echo "Press enter to continue..."
+read x
+echo "Removing 'master'"
+git push origin --delete master
+
