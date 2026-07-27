@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [[ $# -ne 1 ]]; then
+    echo "Usage: cowsquish filename.qcow2"
+    exit 1
+fi
+
+echo "Recompressing ${1}..."
+qemu-img convert -p -c -O qcow2 "${1}" "${1}.squish" || exit 1
+mv -v "${1}.squish" "${1}"
+
